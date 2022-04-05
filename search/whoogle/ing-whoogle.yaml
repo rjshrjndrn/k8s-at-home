@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  name: whoogle
+  namespace: default
+spec:
+  tls:
+  - secretName: whoogle.local.tls
+    hosts:
+    - whoogle.local
+  rules:
+  - host: whoogle.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: whoogle
+            port:
+              number: 5000
